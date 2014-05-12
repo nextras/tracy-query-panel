@@ -1,0 +1,42 @@
+{**
+ * @param string $title
+ * @param QueryCollector $queries
+ *}
+
+<style n:syntax="off">
+	#tracy-debug .tracy-panel td.number { text-align: right; }
+	#tracy-debug .storage,
+	#tracy-debug .query { border-left: 3px solid; }
+</style>
+
+<h1>
+	{$title} {$collector->totalElapsedTime|number:1} ms
+</h1>
+
+{var $perStorage = $collector->getElapsedTimePerStorage()}
+<table n:if="count($perStorage) > 1">
+	<tr>
+		<th class="number">ms</th>
+		<th>Storage</th>
+	</tr>
+	<tr n:foreach="$perStorage as $node" class="storage" style="border-color: #{$node|color}">
+		<td class="number">{$node->elapsed|number:1}</td>
+		<td>
+			{$node->storageType}
+			<code n:if="$node->databaseName">({$node->databaseName})</code>
+		</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th>ms</th>
+		<th>Query</th>
+		<th>Rows</th>
+	</tr>
+	<tr n:foreach="$collector->queries as $query" class="query" style="border-color: #{$query|color}">
+		<td class="number">{$query->elapsedTime|number:1}</td>
+		<td>{$query->query}</td>
+		<td>{$query->resultCount}</td>
+	</tr>
+</table>
