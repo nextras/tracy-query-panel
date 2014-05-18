@@ -38,7 +38,7 @@ class QueryCollector extends Nette\Object
 
 	public function getElapsedTimePerStorage()
 	{
-		$elapsed = [];
+		$elapsed = array();
 		foreach ($this->queries as $query)
 		{
 			$storage = $query->getStorageType();
@@ -47,11 +47,11 @@ class QueryCollector extends Nette\Object
 
 			if (!isset($elapsed[$key]))
 			{
-				$elapsed[$key] = (object) [
+				$elapsed[$key] = (object) array(
 					'storageType' => $storage,
 					'databaseName' => $db,
 					'elapsed' => 0,
-				];
+				);
 			}
 			$elapsed[$key]->elapsed += $query->getElapsedTime();
 		}
@@ -89,12 +89,12 @@ class QueryCollector extends Nette\Object
 	 */
 	public function getTimeExtremes()
 	{
-		$times = [];
+		$times = array();
 		foreach ($this->queries as $query)
 		{
 			$times[] = $query->getElapsedTime();
 		}
-		return [min($times), max($times)];
+		return array(min($times), max($times));
 	}
 
 }

@@ -12,7 +12,7 @@ header('Set-Cookie:tracy-debug-panel-Tracy-QueryPanel-QueryPanel=50:50', FALSE);
 
 $panel = new \Tracy\QueryPanel\QueryPanel();
 
-$nums = [0, 1, 5, 100];
+$nums = array(0, 1, 5, 100);
 $num = $nums[array_rand($nums)];
 for ($i = 0; $i < $num; ++$i)
 {

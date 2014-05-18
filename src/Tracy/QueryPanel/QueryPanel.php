@@ -86,10 +86,10 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 		$latte->addFilter('color', $this->getRandomColor);
 		$latte->addFilter('colorRange', $this->getColorInRange);
 
-		$args = [
+		$args = array(
 			'title' => $this->getTitle(),
 			'collector' => $this->collector,
-		];
+		);
 
 		$this->extremes = $this->collector->getTimeExtremes();
 
@@ -104,13 +104,13 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 	 */
 	public function getColorInRange($value)
 	{
-		$a = [54,170,31];
-		$b = [220,1,57];
+		$a = array(54, 170, 31);
+		$b = array(220, 1, 57);
 
 		list($min, $max) = $this->extremes;
 
 		$lin = ($value - $min) / ($max - $min);
-		$color = [];
+		$color = array();
 		for ($i = 0; $i < 3; ++$i)
 		{
 			$color[$i] = (int) ($a[$i] + ($b[$i] - $a[$i]) * $lin);
@@ -128,8 +128,8 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 		{
 			srand(hexdec(base64_encode($key)) + 3);
 
-			$master = [0xE6, 0xDF, 0xBF];
-			$color = [];
+			$master = array(0xE6, 0xDF, 0xBF);
+			$color = array();
 			foreach ($master as $i => $base)
 			{
 				$color[$i] = dechex(($base + rand(0, 255) * 3) / 4);
