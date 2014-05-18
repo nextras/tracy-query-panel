@@ -126,7 +126,17 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 
 	public function getRandomColor($node)
 	{
-		$key = "$node->storageType|$node->databaseName";
+		if ($node instanceof IVoidQuery)
+		{
+			$storage = $node->getStorageType();
+			$name = $node->getDatabaseName();
+		}
+		else // StdObject
+		{
+			$storage = $node->storageType;
+			$name = $node->databaseName;
+		}
+		$key = "$storage|$name";
 		if (!isset($this->colorMap[$key]))
 		{
 			srand(hexdec(base64_encode($key)) + 3);

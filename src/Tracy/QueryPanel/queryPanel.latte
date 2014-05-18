@@ -58,10 +58,10 @@
 				{var $result = $isVoid ? NULL : $query->getResult()}
 				{var $info = $query->getInfo()}
 				<tr data-type="{$query|color}" class="query" style="border-color: #{$query|color}">
-					{var $time = $query->elapsedTime}
+					{var $time = $query->getElapsedTime()}
 					<td class="elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
 					<td class="tracy-queries-item">
-						<code>{$query->query}</code>
+						<code>{$query->getQuery()}</code>
 						<div n:if="$info">
 							<span class="tracy-queries-label-info">info</span>
 							<div class="tracy-queries-label-fix">{$info}</div>
@@ -71,7 +71,7 @@
 							<div class="tracy-queries-label-fix">{$result}</div>
 						</div>
 					</td>
-					<td n:inner-if="!$isVoid" class="count">{$query->resultCount}</td>
+					<td n:inner-if="!$isVoid" class="count">{$query->getResultCount()}</td>
 				</tr>
 			{/foreach}
 		</tbody>
