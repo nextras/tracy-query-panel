@@ -4,6 +4,8 @@
  *}
 
 <style n:syntax="off">
+	#tracy-queries .highlight td,
+	#tracy-queries tr:hover td { background-color: #EAFCFF !important; }
 	#tracy-queries table { margin-right: 1.5em; }
 	#tracy-queries .tracy-queries-item { width: 300px; }
 	#tracy-queries th.elapsed,
@@ -29,7 +31,7 @@
 			<th class="elapsed">ms</th>
 			<th>Storage</th>
 		</tr>
-		<tr n:foreach="$perStorage as $node" class="storage" style="border-color: #{$node|color}">
+		<tr n:foreach="$perStorage as $node" data-type="{$node|color}" class="storage" style="border-color: #{$node|color}">
 			<td class="elapsed">{$node->elapsed|number:1}</td>
 			<td>
 				{$node->storageType}
@@ -48,7 +50,7 @@
 	</table>{* css does not support floating headers well *}
 	<table class="tracy-queries-list-items">
 		<tbody>
-			<tr n:foreach="$collector->queries as $query" class="query" style="border-color: #{$query|color}">
+			<tr n:foreach="$collector->queries as $query" data-type="{$query|color}" class="query" style="border-color: #{$query|color}">
 				<td class="elapsed">{$query->elapsedTime|number:1}</td>
 				<td class="tracy-queries-item"><code>{$query->query}</code></td>
 				<td n:inner-if="$query instanceof \Tracy\QueryPanel\IQuery" class="count">{$query->resultCount}</td>
@@ -56,3 +58,30 @@
 		</tbody>
 	</table>
 </div>
+<script>
+	var findStorageRow = function(type) {
+		var storageRows = document.getElementsByClassName('tracy-queries-overview')[0].children[0].children;
+        for (i = 0; i < storageRows.length; ++i) {
+            var row = storageRows[i];
+            console.log(row);
+            if (row.getAttribute('data-type') === type)
+            {
+				return row;
+			}
+		}
+	}
+	var rows = document.getElementsByClassName('query');
+	for (i = 0; i < rows.length; ++i) {
+		rows[i].addEventListener("mouseenter", function(event) {
+		console.log('mouse in');
+			var type = event.target.getAttribute('data-type');
+			findStorageRow(type).setAttribute('class', 'storage highlight');
+		});
+		rows[i].addEventListener("mouseleave", function(event) {
+		console.log('mouse out');
+			var type = event.target.getAttribute('data-type');
+			findStorageRow(type).setAttribute('class', 'storage');
+		});
+	}
+
+</script>
