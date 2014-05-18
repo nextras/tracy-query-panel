@@ -20,6 +20,9 @@
 	#tracy-queries .tracy-queries-list-header th:first-of-type { padding-left: 11px; }
 	#tracy-queries .tracy-queries-list-header thead { width: 100%; }
 	#tracy-queries .tracy-queries-list-items tbody { max-height: 380px; overflow-y: scroll; display: block; width: 100%; }
+	#tracy-queries .tracy-queries-label-info { position: relative; margin-left: -30px; }
+	#tracy-queries .tracy-queries-label-result { position: relative; margin-left: -40px; }
+	#tracy-queries .tracy-queries-label-fix { margin-top: -18px; }
 </style>
 
 <h1>{$title|noescape}</h1>
@@ -59,8 +62,14 @@
 					<td class="elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
 					<td class="tracy-queries-item">
 						<code>{$query->query}</code>
-						<div n:if="$info" class="info">{$info}</div>
-						<div n:if="$result" class="result">{$result}</div>
+						<div n:if="$info">
+							<span class="tracy-queries-label-info">info</span>
+							<div class="tracy-queries-label-fix">{$info}</div>
+						</div>
+						<div n:if="$result">
+							<span class="tracy-queries-label-result">result</span>
+							<div class="tracy-queries-label-fix">{$result}</div>
+						</div>
 					</td>
 					<td n:inner-if="!$isVoid" class="count">{$query->resultCount}</td>
 				</tr>
