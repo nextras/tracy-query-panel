@@ -51,7 +51,8 @@
 	<table class="tracy-queries-list-items">
 		<tbody>
 			<tr n:foreach="$collector->queries as $query" data-type="{$query|color}" class="query" style="border-color: #{$query|color}">
-				<td class="elapsed">{$query->elapsedTime|number:1}</td>
+				{var $time = $query->elapsedTime}
+				<td class="elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
 				<td class="tracy-queries-item"><code>{$query->query}</code></td>
 				<td n:inner-if="$query instanceof \Tracy\QueryPanel\IQuery" class="count">{$query->resultCount}</td>
 			</tr>

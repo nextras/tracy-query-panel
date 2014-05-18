@@ -83,4 +83,18 @@ class QueryCollector extends Nette\Object
 		return count($this->queries);
 	}
 
+
+	/**
+	 * @return array [float $min, float $max]
+	 */
+	public function getTimeExtremes()
+	{
+		$times = [];
+		foreach ($this->queries as $query)
+		{
+			$times[] = $query->getElapsedTime();
+		}
+		return [min($times), max($times)];
+	}
+
 }

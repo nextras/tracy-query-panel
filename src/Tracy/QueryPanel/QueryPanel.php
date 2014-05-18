@@ -16,6 +16,9 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 	/** @var array */
 	private $colorMap;
 
+	/** @var array [float $min, float $max] */
+	private $extremes;
+
 
 
 	public function __construct()
@@ -81,13 +84,39 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 		$latte = new Latte\Engine;
 
 		$latte->addFilter('color', $this->getRandomColor);
+		$latte->addFilter('colorRange', $this->getColorInRange);
 
 		$args = [
 			'title' => $this->getTitle(),
 			'collector' => $this->collector,
 		];
 
+		$this->extremes = $this->collector->getTimeExtremes();
+
 		return $latte->renderToString(__DIR__ . '/queryPanel.latte', $args);
+	}
+
+
+	/**
+	 * Linear color gradient
+	 * @param float $value
+	 * @return string hex color
+	 */
+	public function getColorInRange($value)
+	{
+		$a = [54,170,31];
+		$b = [220,1,57];
+
+		list($min, $max) = $this->extremes;
+
+		$lin = ($value - $min) / ($max - $min);
+		$color = [];
+		for ($i = 0; $i < 3; ++$i)
+		{
+			$color[$i] = (int) ($a[$i] + ($b[$i] - $a[$i]) * $lin);
+		}
+
+		return 'rgb(' . implode(',', $color) . ')';
 	}
 
 
