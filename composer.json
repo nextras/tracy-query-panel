@@ -13,5 +13,10 @@
             "email": "mikulas@dite.pro"
         }
     ],
+    "autoload": {
+        "psr-0": {
+            "Tracy\\QueryPanel\\": "src/"
+        }
+    },
     "minimum-stability": "stable"
 }
