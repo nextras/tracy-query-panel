@@ -39,4 +39,11 @@ interface IVoidQuery
 	 */
 	public function getElapsedTime();
 
+
+	/**
+	 * e.g. SQL explain
+	 * @return NULL|Html|string
+	 */
+	public function getInfo();
+
 }

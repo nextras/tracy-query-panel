@@ -6,8 +6,7 @@
 <style n:syntax="off">
 	#tracy-queries .highlight td,
 	#tracy-queries tr:hover td { background-color: #EAFCFF !important; }
-	#tracy-queries table { margin-right: 1.5em; }
-	#tracy-queries .tracy-queries-item { width: 300px; }
+	#tracy-queries .tracy-queries-item { min-width: 300px; }
 	#tracy-queries th.elapsed,
 	#tracy-queries td.elapsed { text-align: right; width: 3em; }
 	#tracy-queries th.count,
@@ -19,7 +18,8 @@
 	#tracy-queries pre.tracy-dump { background-color: inherit; }
 	#tracy-queries .tracy-queries-overview { margin-bottom: 2ex; }
 	#tracy-queries .tracy-queries-list-header th:first-of-type { padding-left: 11px; }
-	#tracy-queries .tracy-queries-list-items tbody { max-height: 380px; overflow-y: scroll; display: block; }
+	#tracy-queries .tracy-queries-list-header thead { width: 100%; }
+	#tracy-queries .tracy-queries-list-items tbody { max-height: 380px; overflow-y: scroll; display: block; width: 100%; }
 </style>
 
 <h1>{$title|noescape}</h1>
@@ -50,12 +50,21 @@
 	</table>{* css does not support floating headers well *}
 	<table class="tracy-queries-list-items">
 		<tbody>
-			<tr n:foreach="$collector->queries as $query" data-type="{$query|color}" class="query" style="border-color: #{$query|color}">
-				{var $time = $query->elapsedTime}
-				<td class="elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
-				<td class="tracy-queries-item"><code>{$query->query}</code></td>
-				<td n:inner-if="$query instanceof \Tracy\QueryPanel\IQuery" class="count">{$query->resultCount}</td>
-			</tr>
+			{foreach $collector->queries as $query}
+				{var $isVoid = ! $query instanceof \Tracy\QueryPanel\IQuery}
+				{var $result = $isVoid ? NULL : $query->getResult()}
+				{var $info = $query->getInfo()}
+				<tr data-type="{$query|color}" class="query" style="border-color: #{$query|color}">
+					{var $time = $query->elapsedTime}
+					<td class="elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
+					<td class="tracy-queries-item">
+						<code>{$query->query}</code>
+						<div n:if="$info" class="info">{$info}</div>
+						<div n:if="$result" class="result">{$result}</div>
+					</td>
+					<td n:inner-if="!$isVoid" class="count">{$query->resultCount}</td>
+				</tr>
+			{/foreach}
 		</tbody>
 	</table>
 

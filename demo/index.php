@@ -7,6 +7,9 @@ require __DIR__ . '/MockQuery.php';
 use Tracy\Debugger;
 Debugger::enable();
 
+header('Set-Cookie:tracy-debug-bar=50:20', FALSE);
+header('Set-Cookie:tracy-debug-panel-Tracy-QueryPanel-QueryPanel=50:50', FALSE);
+
 $panel = new \Tracy\QueryPanel\QueryPanel();
 
 $nums = [0, 1, 5, 100];
