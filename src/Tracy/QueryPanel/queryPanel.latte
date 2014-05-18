@@ -25,7 +25,7 @@
 <h1>{$title|noescape}</h1>
 
 {var $perStorage = $collector->getElapsedTimePerStorage()}
-<div id="tracy-queries"  n:if="count($perStorage)">
+<div id="tracy-queries" n:if="count($perStorage)">
 	<table class="tracy-queries-overview">
 		<tr>
 			<th class="elapsed">ms</th>
@@ -58,31 +58,31 @@
 			</tr>
 		</tbody>
 	</table>
-</div>
-<script>
-	var findStorageRow = function(type) {
-		var storageRows = document.getElementsByClassName('tracy-queries-overview')[0].children[0].children;
-        for (i = 0; i < storageRows.length; ++i) {
-            var row = storageRows[i];
-            console.log(row);
-            if (row.getAttribute('data-type') === type)
-            {
-				return row;
-			}
-		}
-	}
-	var rows = document.getElementsByClassName('query');
-	for (i = 0; i < rows.length; ++i) {
-		rows[i].addEventListener("mouseenter", function(event) {
-		console.log('mouse in');
-			var type = event.target.getAttribute('data-type');
-			findStorageRow(type).setAttribute('class', 'storage highlight');
-		});
-		rows[i].addEventListener("mouseleave", function(event) {
-		console.log('mouse out');
-			var type = event.target.getAttribute('data-type');
-			findStorageRow(type).setAttribute('class', 'storage');
-		});
-	}
 
-</script>
+	<script n:syntax="off">
+    	var findStorageRow = function(type) {
+    		var storageRows = document.getElementsByClassName('tracy-queries-overview')[0].children[0].children;
+            for (i = 0; i < storageRows.length; ++i) {
+                var row = storageRows[i];
+                console.log(row);
+                if (row.getAttribute('data-type') === type)
+                {
+    				return row;
+    			}
+    		}
+    	}
+    	var rows = document.getElementsByClassName('query');
+    	for (i = 0; i < rows.length; ++i) {
+    		rows[i].addEventListener("mouseenter", function(event) {
+    		console.log('mouse in');
+    			var type = event.target.getAttribute('data-type');
+    			findStorageRow(type).setAttribute('class', 'storage highlight');
+    		});
+    		rows[i].addEventListener("mouseleave", function(event) {
+    		console.log('mouse out');
+    			var type = event.target.getAttribute('data-type');
+    			findStorageRow(type).setAttribute('class', 'storage');
+    		});
+    	}
+    </script>
+</div>
