@@ -9,7 +9,7 @@ class QueryCollector extends Nette\Object
 {
 
 	/** @var IQuery[] */
-	protected $queries;
+	protected $queries = array();
 
 
 
