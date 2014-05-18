@@ -5,7 +5,7 @@ $loader->add('Tracy\\QueryPanel', __DIR__ . '/../src');
 require __DIR__ . '/MockQuery.php';
 
 use Tracy\Debugger;
-Debugger::enable();
+Debugger::enable(Debugger::DEVELOPMENT);
 
 header('Set-Cookie:tracy-debug-bar=50:20', FALSE);
 header('Set-Cookie:tracy-debug-panel-Tracy-QueryPanel-QueryPanel=50:50', FALSE);
