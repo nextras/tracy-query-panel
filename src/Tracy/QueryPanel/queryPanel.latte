@@ -77,7 +77,8 @@
 		</tbody>
 	</table>
 
-	<script n:syntax="off">
+	<script type="text/javascript" n:syntax="off">
+		//<![CDATA[
     	var findStorageRow = function(type) {
     		var storageRows = document.querySelectorAll('.tracy-queries-overview tr');
             for (i = 0; i < storageRows.length; ++i) {
@@ -99,5 +100,6 @@
     			findStorageRow(type).setAttribute('class', 'storage');
     		});
     	}
+    	//]]>
     </script>
 </div>
