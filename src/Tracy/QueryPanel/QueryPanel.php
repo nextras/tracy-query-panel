@@ -91,7 +91,10 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 			'collector' => $this->collector,
 		);
 
-		$this->extremes = $this->collector->getTimeExtremes();
+		if ($this->collector->queries)
+		{
+			$this->extremes = $this->collector->getTimeExtremes();
+		}
 
 		return $latte->renderToString(__DIR__ . '/queryPanel.latte', $args);
 	}
