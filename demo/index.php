@@ -8,7 +8,11 @@ use Tracy\Debugger;
 Debugger::enable();
 
 $panel = new \Tracy\QueryPanel\QueryPanel();
-for ($i = 0; $i < 15; ++$i)
+
+$nums = [0, 1, 5, 100];
+$nums = [100];
+$num = $nums[array_rand($nums)];
+for ($i = 0; $i < $num; ++$i)
 {
 	$panel->addQuery(new MockQuery());
 }

@@ -40,14 +40,18 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 		$c = $this->collector->count();
 		if ($c === 0)
 		{
-			return 'no queries';
+			$title = 'no queries';
 		}
 		else if ($c === 1)
 		{
-			return '1 query';
+			$title = '1 query';
+		}
+		else
+		{
+			$title = "$c queries";
 		}
 
-		return "$c queries";
+		return "$title, " . number_format($this->collector->totalElapsedTime, 1) . '&nbsp;ms';
 	}
 
 
@@ -59,7 +63,10 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 	 */
 	public function getTab()
 	{
-		return $this->getTitle();
+		$img = base64_encode(file_get_contents(__DIR__ . '/icon.svg'));
+		return '<img width="16" height="16" src="data:image/svg+xml;base64,' . $img . '" />'
+			. $this->getTitle()
+			. '</span>';
 	}
 
 
@@ -90,7 +97,7 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 		$key = "$node->storageType|$node->databaseName";
 		if (!isset($this->colorMap[$key]))
 		{
-			srand(hexdec(base64_encode($key)) + 6);
+			srand(hexdec(base64_encode($key)) + 3);
 
 			$master = [0xE6, 0xDF, 0xBF];
 			$color = [];

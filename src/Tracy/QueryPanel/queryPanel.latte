@@ -4,39 +4,55 @@
  *}
 
 <style n:syntax="off">
-	#tracy-debug .tracy-panel td.number { text-align: right; }
-	#tracy-debug .storage,
-	#tracy-debug .query { border-left: 3px solid; }
+	#tracy-queries table { margin-right: 1.5em; }
+	#tracy-queries .tracy-queries-item { width: 300px; }
+	#tracy-queries th.elapsed,
+	#tracy-queries td.elapsed { text-align: right; width: 3em; }
+	#tracy-queries th.count,
+	#tracy-queries td.count { text-align: right; width: 32px; }
+	#tracy-queries .storage,
+	#tracy-queries .query { border-left: 4px solid; }
+	#tracy-queries .query .outlier { color: red; }
+	#tracy-queries code pre b { color: blue; }
+	#tracy-queries pre.tracy-dump { background-color: inherit; }
+	#tracy-queries .tracy-queries-overview { margin-bottom: 2ex; }
+	#tracy-queries .tracy-queries-list-header th:first-of-type { padding-left: 11px; }
+	#tracy-queries .tracy-queries-list-items tbody { max-height: 380px; overflow-y: scroll; display: block; }
 </style>
 
-<h1>
-	{$title} {$collector->totalElapsedTime|number:1} ms
-</h1>
+<h1>{$title|noescape}</h1>
 
 {var $perStorage = $collector->getElapsedTimePerStorage()}
-<table n:if="count($perStorage) > 1">
-	<tr>
-		<th class="number">ms</th>
-		<th>Storage</th>
-	</tr>
-	<tr n:foreach="$perStorage as $node" class="storage" style="border-color: #{$node|color}">
-		<td class="number">{$node->elapsed|number:1}</td>
-		<td>
-			{$node->storageType}
-			<code n:if="$node->databaseName">({$node->databaseName})</code>
-		</td>
-	</tr>
-</table>
-
-<table>
-	<tr>
-		<th>ms</th>
-		<th>Query</th>
-		<th>Rows</th>
-	</tr>
-	<tr n:foreach="$collector->queries as $query" class="query" style="border-color: #{$query|color}">
-		<td class="number">{$query->elapsedTime|number:1}</td>
-		<td>{$query->query}</td>
-		<td>{$query->resultCount}</td>
-	</tr>
-</table>
+<div id="tracy-queries"  n:if="count($perStorage)">
+	<table class="tracy-queries-overview">
+		<tr>
+			<th class="elapsed">ms</th>
+			<th>Storage</th>
+		</tr>
+		<tr n:foreach="$perStorage as $node" class="storage" style="border-color: #{$node|color}">
+			<td class="elapsed">{$node->elapsed|number:1}</td>
+			<td>
+				{$node->storageType}
+				<code n:if="$node->databaseName">({$node->databaseName})</code>
+			</td>
+		</tr>
+	</table>
+	<table class="tracy-queries-list-header">
+		<thead>
+			<tr>
+				<th class="elapsed">ms</th>
+				<th class="tracy-queries-item">Query</th>
+				<th class="count">Rows</th>
+			</tr>
+		</thead>
+	</table>{* css does not support floating headers well *}
+	<table class="tracy-queries-list-items">
+		<tbody>
+			<tr n:foreach="$collector->queries as $query" class="query" style="border-color: #{$query|color}">
+				<td class="elapsed">{$query->elapsedTime|number:1}</td>
+				<td class="tracy-queries-item"><code>{$query->query}</code></td>
+				<td n:inner-if="$query instanceof \Tracy\QueryPanel\IQuery" class="count">{$query->resultCount}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
