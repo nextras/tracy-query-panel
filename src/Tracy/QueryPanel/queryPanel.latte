@@ -79,76 +79,75 @@
 
 	<script type="text/javascript" n:syntax="off">
 		//<![CDATA[
-    	var findStorageRow = function(type) {
-    		var storageRows = document.querySelectorAll('.tracy-queries-overview tr');
-            for (i = 0; i < storageRows.length; ++i) {
-                var row = storageRows[i];
-                if (row.getAttribute('data-storage-id') === type)
-                {
-    				return row;
-    			}
-    		}
-    	};
+		(function() {
+			var storageRows = document.querySelectorAll('.tracy-queries-overview tr[data-storage-id]');
+			var queryRows = document.querySelectorAll('.tracy-queries-list tr[data-storage-id]');
 
-    	var updateFilteredRows = function() {
-    	    var storages = document.querySelectorAll('.tracy-queries-overview tr[data-storage-id]');
-    	    var filter = {};
-    	    for (i = 0; i < storages.length; ++i)
-    	    {
-    	        var id = storages[i].getAttribute('data-storage-id');
-    	        filter[id] = storages[i].querySelector('input').checked;
-    	    }
-    	    saveState(filter);
+			var foreach = function(array, cb) {
+				for (i = 0; i < array.length; ++i) {
+					cb(array[i], array[i].getAttribute('data-storage-id'));
+				}
+			};
 
-    	    var queries = document.querySelectorAll('.tracy-queries-list tr[data-storage-id]');
-    	    for (i = 0; i < queries.length; ++i)
-			{
-				var id = queries[i].getAttribute('data-storage-id');
-				queries[i].setAttribute('class', filter[id] ? '' : 'hidden');
-			}
-    	};
+	        var findStorageRow = function(type) {
+	            var row;
+	            foreach(storageRows, function(storage, t) {
+	                if (t === type) {
+	                    row = storage;
+	                }
+	            });
+	            return row;
+	        };
 
-    	var rows = document.querySelectorAll('.tracy-queries-list tr[data-storage-id]');
-    	for (i = 0; i < rows.length; ++i) {
-    		rows[i].addEventListener("mouseenter", function(event) {
-    			var type = event.target.getAttribute('data-storage-id');
-    			findStorageRow(type).setAttribute('class', 'storage tracy-queries-highlight');
-    		});
-    		rows[i].addEventListener("mouseleave", function(event) {
-    			var type = event.target.getAttribute('data-storage-id');
-    			findStorageRow(type).setAttribute('class', 'storage');
-    		});
-    	}
+	        var updateFilteredRows = function() {
+	            var filter = {};
+	            foreach(storageRows, function(storage, id) {
+	                filter[id] = storage.querySelector('input').checked;
+	            });
+	            saveState(filter);
 
-    	var rows = document.querySelectorAll('.storage');
-        for (i = 0; i < rows.length; ++i) {
-            rows[i].addEventListener("click", function(event) {
-                var checkbox = event.target;
-                if (!checkbox.getAttribute("type"))
-                {
-                    checkbox = event.target.parentNode.querySelector('input');
-                    checkbox.checked = !checkbox.checked;
-                }
+				foreach(queryRows, function(query, id) {
+					query.setAttribute('class', filter[id] ? '' : 'hidden');
+				});
+	        };
 
-                updateFilteredRows();
-            });
-        }
+			var registerHandlers = function() {
+				foreach(queryRows, function(query, id) {
+					query.addEventListener("mouseenter", function(event) {
+						findStorageRow(id).setAttribute('class', 'storage tracy-queries-highlight');
+					});
+					query.addEventListener("mouseleave", function(event) {
+                        findStorageRow(id).setAttribute('class', 'storage');
+                    });
+				});
+		        foreach(storageRows, function(storage, id) {
+		            storage.addEventListener("click", function(event) {
+                        var checkbox = event.target;
+                        if (!checkbox.getAttribute("type"))
+                        {
+                            checkbox = event.target.parentNode.querySelector('input');
+                            checkbox.checked = !checkbox.checked;
+                        }
 
-        var saveState = function(filter) {
-			localStorage.setItem("tracy-queries", JSON.stringify(filter));
-		};
-		var loadState = function() {
-			var filter = JSON.parse(localStorage.getItem("tracy-queries") || "{}");
-			var rows = document.querySelectorAll('.tracy-queries-overview tr[data-storage-id]');
-            for (i = 0; i < rows.length; ++i) {
-				var id = rows[i].getAttribute('data-storage-id');
-				console.log(!(id in filter));
-				rows[i].querySelector('input').checked = !(id in filter) || filter[id];
-			}
-			updateFilteredRows();
-		};
+                        updateFilteredRows();
+                    });
+		        });
+		    };
 
-		loadState();
+	        var saveState = function(filter) {
+				localStorage.setItem("tracy-queries", JSON.stringify(filter));
+			};
+			var loadState = function() {
+				var filter = JSON.parse(localStorage.getItem("tracy-queries") || "{}");
+				foreach(storageRows, function(storage, id) {
+					storage.querySelector('input').checked = !(id in filter) || filter[id];
+				});
+	            updateFilteredRows();
+			};
+
+			registerHandlers();
+			loadState();
+		})();
     	//]]>
     </script>
 </div>
