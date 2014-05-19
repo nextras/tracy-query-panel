@@ -5,6 +5,9 @@ namespace Tracy\QueryPanel;
 use Nette;
 
 
+/**
+ * @internal
+ */
 class QueryCollector extends Nette\Object
 {
 
@@ -12,7 +15,9 @@ class QueryCollector extends Nette\Object
 	protected $queries = array();
 
 
-
+	/**
+	 * @param IQuery $query
+	 */
 	public function addQuery(IQuery $query)
 	{
 		$this->queries[] = $query;
@@ -35,7 +40,9 @@ class QueryCollector extends Nette\Object
 	}
 
 
-
+	/**
+	 * @return array
+	 */
 	public function getPerStorageInfo()
 	{
 		$elapsed = array();

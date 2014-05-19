@@ -28,6 +28,7 @@ interface IVoidQuery
 
 
 	/**
+	 * Actual formatted query, e.g. 'SELECT * FROM ...'
 	 * @return Html|string
 	 */
 	public function getQuery();

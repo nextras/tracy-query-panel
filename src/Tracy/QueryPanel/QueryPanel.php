@@ -74,7 +74,7 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 	/**
 	 * Renders HTML code for custom panel.
 	 *
-	 * @return string
+	 * @return string html
 	 */
 	public function getPanel()
 	{
@@ -97,13 +97,16 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 	}
 
 
-
+	/**
+	 * @internal
+	 */
 	public function getStorageId($query)
 	{
 		if ($query instanceof IVoidQuery)
 		{
 			return $query->getStorageType() . '|' . $query->getDatabaseName();
 		}
+		// StdClass from perStorageInfo
 		return $query->storageType . '|' . $query->databaseName;
 	}
 
