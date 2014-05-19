@@ -4,13 +4,13 @@
  *}
 
 <style n:syntax="off">
-	#tracy-queries .highlight td,
-	#tracy-queries tr:hover td { background-color: #EAFCFF !important; }
-	#tracy-queries .tracy-queries-item { min-width: 300px; }
-	#tracy-queries th.elapsed,
-	#tracy-queries td.elapsed { text-align: right; width: 4em; }
 	#tracy-queries code pre b { color: blue; }
 	#tracy-queries pre.tracy-dump { background-color: inherit; }
+	#tracy-queries .tracy-queries-item { min-width: 300px; }
+	#tracy-queries .tracy-queries-highlight td,
+	#tracy-queries tr:hover td { background-color: #EAFCFF !important; }
+	#tracy-queries th.tracy-queries-elapsed,
+	#tracy-queries td.tracy-queries-elapsed { text-align: right; width: 4em; }
 	#tracy-queries .tracy-queries-overview { margin-bottom: 2ex; }
 	#tracy-queries .tracy-queries-list { max-height: 380px; overflow-y: scroll; display: block; }
 	#tracy-queries .tracy-queries-label-info { position: relative; margin-left: -30px; }
@@ -25,13 +25,13 @@
 	<table class="tracy-queries-overview">
 		<thead>
 			<tr>
-				<th class="elapsed">ms</th>
+				<th class="tracy-queries-elapsed">ms</th>
 				<th>Storage</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr n:foreach="$perStorage as $node" data-storage-id="{$node|storageId}" class="storage">
-				<td class="elapsed">{$node->elapsed|number:1}</td>
+				<td class="tracy-queries-elapsed">{$node->elapsed|number:1}</td>
 				<td>
 					{$node->storageType}
 					<code n:if="$node->databaseName">({$node->databaseName})</code>
@@ -42,7 +42,7 @@
 	<table class="tracy-queries-list">
 		<thead>
 			<tr>
-				<th class="elapsed">ms</th>
+				<th class="tracy-queries-elapsed">ms</th>
 				<th class="tracy-queries-item">Query</th>
 			</tr>
 		</thead>
@@ -53,7 +53,7 @@
 				{var $info = $query->getInfo()}
 				<tr data-storage-id="{$query|storageId}" class="query">
 					{var $time = $query->getElapsedTime()}
-					<td class="elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
+					<td class="tracy-queries-elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
 					<td class="tracy-queries-item">
 						<code>{$query->getQuery()}</code>
 						<div n:if="$info">
@@ -86,11 +86,11 @@
     	for (i = 0; i < rows.length; ++i) {
     		rows[i].addEventListener("mouseenter", function(event) {
     			var type = event.target.getAttribute('data-storage-id');
-    			findStorageRow(type).setAttribute('class', 'storage highlight');
+    			findStorageRow(type).setAttribute('class', 'tracy-queries-highlight');
     		});
     		rows[i].addEventListener("mouseleave", function(event) {
     			var type = event.target.getAttribute('data-storage-id');
-    			findStorageRow(type).setAttribute('class', 'storage');
+    			findStorageRow(type).setAttribute('class', '');
     		});
     	}
     	//]]>
