@@ -83,6 +83,7 @@
 		(function() {
 			var storageRows = document.querySelectorAll('.tracy-queries-overview tr[data-storage-id]');
 			var queryRows = document.querySelectorAll('.tracy-queries-list tr[data-storage-id]');
+			var filter = {};
 
 			var foreach = function(array, cb) {
 				for (i = 0; i < array.length; ++i) {
@@ -101,7 +102,6 @@
 	        };
 
 	        var updateFilteredRows = function() {
-	            var filter = {};
 	            foreach(storageRows, function(storage, id) {
 	                filter[id] = storage.querySelector('input').checked;
 	            });
@@ -139,7 +139,7 @@
 				localStorage.setItem("tracy-queries", JSON.stringify(filter));
 			};
 			var loadState = function() {
-				var filter = JSON.parse(localStorage.getItem("tracy-queries") || "{}");
+				filter = JSON.parse(localStorage.getItem("tracy-queries") || "{}");
 				foreach(storageRows, function(storage, id) {
 					storage.querySelector('input').checked = !(id in filter) || filter[id];
 				});
