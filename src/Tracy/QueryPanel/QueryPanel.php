@@ -13,9 +13,6 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 	/** @var QueryCollector */
 	protected $collector;
 
-	/** @var array */
-	private $colorMap;
-
 	/** @var array [float $min, float $max] */
 	private $extremes;
 
@@ -83,7 +80,7 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 	{
 		$latte = new Latte\Engine;
 
-		$latte->addFilter('color', $this->getRandomColor);
+		$latte->addFilter('storageId', $this->getStorageId);
 		$latte->addFilter('colorRange', $this->getColorInRange);
 
 		$args = array(
@@ -98,6 +95,18 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 
 		return $latte->renderToString(__DIR__ . '/queryPanel.latte', $args);
 	}
+
+
+
+	public function getStorageId($query)
+	{
+		if ($query instanceof IVoidQuery)
+		{
+			return $query->getStorageType() . '|' . $query->getDatabaseName();
+		}
+		return $query->storageType . '|' . $query->databaseName;
+	}
+
 
 
 	/**
@@ -120,40 +129,6 @@ class QueryPanel extends Nette\Object implements Tracy\IBarPanel
 		}
 
 		return 'rgb(' . implode(',', $color) . ')';
-	}
-
-
-
-	public function getRandomColor($node)
-	{
-		if ($node instanceof IVoidQuery)
-		{
-			$storage = $node->getStorageType();
-			$name = $node->getDatabaseName();
-		}
-		else // StdObject
-		{
-			$storage = $node->storageType;
-			$name = $node->databaseName;
-		}
-		$key = "$storage|$name";
-		if (!isset($this->colorMap[$key]))
-		{
-			srand(hexdec(base64_encode($key)) + 3);
-
-			$master = array(0xE6, 0xDF, 0xBF);
-			$color = array();
-			foreach ($master as $i => $base)
-			{
-				$color[$i] = dechex(($base + rand(0, 255) * 3) / 4);
-			}
-
-			$this->colorMap[$key] = implode('', $color);
-
-			srand(mt_rand());
-		}
-
-		return $this->colorMap[$key];
 	}
 
 }

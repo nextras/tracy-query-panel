@@ -9,9 +9,6 @@
 	#tracy-queries .tracy-queries-item { min-width: 300px; }
 	#tracy-queries th.elapsed,
 	#tracy-queries td.elapsed { text-align: right; width: 4em; }
-	#tracy-queries .storage,
-	#tracy-queries .query { border-left: 4px solid; }
-	#tracy-queries .query .outlier { color: red; }
 	#tracy-queries code pre b { color: blue; }
 	#tracy-queries pre.tracy-dump { background-color: inherit; }
 	#tracy-queries .tracy-queries-overview { margin-bottom: 2ex; }
@@ -26,17 +23,21 @@
 {var $perStorage = $collector->getElapsedTimePerStorage()}
 <div id="tracy-queries" n:if="count($perStorage)">
 	<table class="tracy-queries-overview">
-		<tr>
-			<th class="elapsed">ms</th>
-			<th>Storage</th>
-		</tr>
-		<tr n:foreach="$perStorage as $node" data-type="{$node|color}" class="storage" style="border-color: #{$node|color}">
-			<td class="elapsed">{$node->elapsed|number:1}</td>
-			<td>
-				{$node->storageType}
-				<code n:if="$node->databaseName">({$node->databaseName})</code>
-			</td>
-		</tr>
+		<thead>
+			<tr>
+				<th class="elapsed">ms</th>
+				<th>Storage</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr n:foreach="$perStorage as $node" data-storage-id="{$node|storageId}" class="storage">
+				<td class="elapsed">{$node->elapsed|number:1}</td>
+				<td>
+					{$node->storageType}
+					<code n:if="$node->databaseName">({$node->databaseName})</code>
+				</td>
+			</tr>
+		</tbody>
 	</table>
 	<table class="tracy-queries-list">
 		<thead>
@@ -50,7 +51,7 @@
 				{var $isVoid = ! $query instanceof \Tracy\QueryPanel\IQuery}
 				{var $result = $isVoid ? NULL : $query->getResult()}
 				{var $info = $query->getInfo()}
-				<tr data-type="{$query|color}" class="query" style="border-color: #{$query|color}">
+				<tr data-storage-id="{$query|storageId}" class="query">
 					{var $time = $query->getElapsedTime()}
 					<td class="elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
 					<td class="tracy-queries-item">
@@ -75,7 +76,7 @@
     		var storageRows = document.querySelectorAll('.tracy-queries-overview tr');
             for (i = 0; i < storageRows.length; ++i) {
                 var row = storageRows[i];
-                if (row.getAttribute('data-type') === type)
+                if (row.getAttribute('data-storage-id') === type)
                 {
     				return row;
     			}
@@ -84,11 +85,11 @@
     	var rows = document.querySelectorAll('.query');
     	for (i = 0; i < rows.length; ++i) {
     		rows[i].addEventListener("mouseenter", function(event) {
-    			var type = event.target.getAttribute('data-type');
+    			var type = event.target.getAttribute('data-storage-id');
     			findStorageRow(type).setAttribute('class', 'storage highlight');
     		});
     		rows[i].addEventListener("mouseleave", function(event) {
-    			var type = event.target.getAttribute('data-type');
+    			var type = event.target.getAttribute('data-storage-id');
     			findStorageRow(type).setAttribute('class', 'storage');
     		});
     	}
