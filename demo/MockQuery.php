@@ -6,6 +6,7 @@ class MockQuery extends \Nette\Object implements \Tracy\QueryPanel\IQuery
 	private $resultCount;
 	private $elapsedTime;
 	private $type;
+	private $databaseName = FALSE;
 
 	public function __construct()
 	{
@@ -43,17 +44,24 @@ class MockQuery extends \Nette\Object implements \Tracy\QueryPanel\IQuery
 
 	public function getDatabaseName()
 	{
-		if ($this->type === 'mysql')
+		if ($this->databaseName === FALSE)
 		{
-			$db = array('db_foo', 'db_bar');
-			return $db[array_rand($db)];
-		}
-		else if ($this->type === 'elastic')
-		{
-			return 'appName';
+			if ($this->type === 'mysql')
+			{
+				$db = array('db_foo', 'db_bar');
+				$this->databaseName = $db[array_rand($db)];
+			}
+			else if ($this->type === 'elastic')
+			{
+				$this->databaseName = 'appName';
+			}
+			else
+			{
+				$this->databaseName = NULL;
+			}
 		}
 
-		return NULL;
+		return $this->databaseName;
 	}
 
 	public function getQuery()
