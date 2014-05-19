@@ -14,6 +14,9 @@
 	#tracy-queries td.tracy-queries-elapsed { text-align: right; width: 4em; }
 	#tracy-queries .tracy-queries-overview { margin-bottom: 2ex; }
 	#tracy-queries .tracy-queries-list { max-height: 380px; overflow-y: scroll; display: block; }
+	#tracy-queries .tracy-queries-border-fix { border: 1px solid #E6DFBF; border-width: 1px 0px; }
+	#tracy-queries .tracy-queries-border-fix tr:first-of-type th { border-top: none; }
+	#tracy-queries .tracy-queries-border-fix tr:last-of-type td { border-bottom: none; }
 	#tracy-queries .tracy-queries-label-info { position: relative; margin-left: -30px; }
 	#tracy-queries .tracy-queries-label-result { position: relative; margin-left: -40px; }
 	#tracy-queries .tracy-queries-label-fix { margin-top: -18px; }
@@ -41,7 +44,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<table class="tracy-queries-list">
+	<table class="tracy-queries-list tracy-queries-border-fix">
 		<thead>
 			<tr>
 				<th class="tracy-queries-elapsed">ms</th>
