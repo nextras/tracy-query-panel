@@ -14,9 +14,10 @@
 	#tracy-queries td.tracy-queries-elapsed { text-align: right; width: 4em; }
 	#tracy-queries .tracy-queries-hidden { display: none; }
 	#tracy-queries .tracy-queries-storages { margin-bottom: 2ex; }
-	#tracy-queries .tracy-queries-overflow { max-height: 380px; overflow-y: scroll; box-sizing: border-box; display: block; border: 1px solid #E6DFBF; border-width: 1px 0px; }
-	#tracy-queries .tracy-queries-overflow tr:first-of-type th { border-top: none; }
-	#tracy-queries .tracy-queries-overflow tr:last-of-type td { border-bottom: none; }
+	#tracy-queries .tracy-queries-borderfix { border: 1px solid #E6DFBF; border-width: 1px 0px; }
+	#tracy-queries .tracy-queries-overflow { max-height: 380px; overflow-y: scroll; box-sizing: border-box; display: block; }
+	#tracy-queries .tracy-queries-overflow > table > thead > tr:first-of-type > th { border-top: none; }
+	#tracy-queries .tracy-queries-overflow > table > tbody > tr:last-of-type > td { border-bottom: none; }
 	#tracy-queries .tracy-queries-label-info { position: relative; margin-left: -30px; }
 	#tracy-queries .tracy-queries-label-result { position: relative; margin-left: -40px; }
 	#tracy-queries .tracy-queries-label-fix { margin-top: -18px; }
@@ -46,37 +47,39 @@
 			</tr>
 		</tbody>
 	</table>
-	<div class="tracy-queries-overflow">
-		<table class="tracy-queries-list tracy-queries-border-fix">
-			<thead>
-				<tr>
-					<th class="tracy-queries-elapsed">ms</th>
-					<th class="tracy-queries-item">Query</th>
-				</tr>
-			</thead>
-			<tbody>
-				{foreach $collector->queries as $query}
-					{var $isVoid = ! $query instanceof \Tracy\QueryPanel\IQuery}
-					{var $result = $isVoid ? NULL : $query->getResult()}
-					{var $info = $query->getInfo()}
-					<tr data-storage-id="{$query|storageId}">
-						{var $time = $query->getElapsedTime()}
-						<td class="tracy-queries-elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
-						<td class="tracy-queries-item">
-							<code>{$query->getQuery()}</code>
-							<div n:if="$info">
-								<span class="tracy-queries-label-info">info</span>
-								<div class="tracy-queries-label-fix">{$info}</div>
-							</div>
-							<div n:if="$result">
-								<span class="tracy-queries-label-result">result</span>
-								<div class="tracy-queries-label-fix">{$result}</div>
-							</div>
-						</td>
+	<div class="tracy-queries-borderfix">
+		<div class="tracy-queries-overflow">
+			<table class="tracy-queries-list tracy-queries-border-fix">
+				<thead>
+					<tr>
+						<th class="tracy-queries-elapsed">ms</th>
+						<th class="tracy-queries-item">Query</th>
 					</tr>
-				{/foreach}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{foreach $collector->queries as $query}
+						{var $isVoid = ! $query instanceof \Tracy\QueryPanel\IQuery}
+						{var $result = $isVoid ? NULL : $query->getResult()}
+						{var $info = $query->getInfo()}
+						<tr data-storage-id="{$query|storageId}">
+							{var $time = $query->getElapsedTime()}
+							<td class="tracy-queries-elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
+							<td class="tracy-queries-item">
+								<code>{$query->getQuery()}</code>
+								<div n:if="$info">
+									<span class="tracy-queries-label-info">info</span>
+									<div class="tracy-queries-label-fix">{$info}</div>
+								</div>
+								<div n:if="$result">
+									<span class="tracy-queries-label-result">result</span>
+									<div class="tracy-queries-label-fix">{$result}</div>
+								</div>
+							</td>
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<script type="text/javascript" n:syntax="off">
