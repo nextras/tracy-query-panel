@@ -26,8 +26,14 @@ class MockQuery extends \Nette\Object implements \Tracy\QueryPanel\IQuery
 					array('id' => 2, 'foo' => 'rab', 'baz' => 'tahw'),
 				);
 				break;
+			case 'postgres':
+				$result = array();
+				break;
 			case 'elastic':
 				$result = json_decode(file_get_contents(__DIR__ . '/response.elastic'), TRUE);
+				break;
+			case 'neo4j':
+				$result = json_decode('[{"entity_id":2,"path_id":1,"types":["Content","Video"]}]', TRUE);
 				break;
 			default:
 				return NULL;
@@ -76,7 +82,7 @@ class MockQuery extends \Nette\Object implements \Tracy\QueryPanel\IQuery
 				$query = json_decode(file_get_contents(__DIR__ . '/request.elastic'), TRUE);
 				return \Nette\Utils\Html::el('')->setHtml(\Tracy\Dumper::toHtml($query, array(\Tracy\Dumper::COLLAPSE_COUNT => 1, \Tracy\Dumper::DEPTH => 10)));
 			case 'neo4j':
-				return \Nette\Utils\Html::el('')->setHtml("<pre><b>MATCH</b> (v:Video)<-[:CONTAINS]-(t:Tag)\n<b>WHERE</b> v.eid = $r\n<b>RETURN</b> t</pre>");
+				return \Nette\Utils\Html::el('')->setHtml("<pre><b>MATCH</b> (v:Video)<-[:CONTAINS]-(t:Tag)\n<b>WHERE</b> v.eid = {eid}\n<b>RETURN</b> t</pre>");
 			case 'redis':
 			default:
 				return \Nette\Utils\Html::el('')->setHtml("<pre><b>HGETALL</b> user:$r</pre>");
@@ -113,11 +119,12 @@ class MockQuery extends \Nette\Object implements \Tracy\QueryPanel\IQuery
 				));
 				break;
 			case 'postgres':
-				$info = array(
-					'Limit  (cost=0.14..10.26 rows=50 width=341)',
-					'  ->  Index Scan Backward using blueprints_pkey on blueprints  (cost=0.14..20.37 rows=100 width=341)',
-				);
+				$info = json_decode('[ { "Plan": { "Node Type": "Index Scan","Scan Direction": "Forward","Index Name": "videos_pkey","Relation Name": "videos","Alias": "e","Startup Cost": 0.16,"Total Cost": 13.69,"Plan Rows": 10,"Plan Width": 167,"Index Cond": "(id = ANY (\'{330,82,56,55,311,270,277,290,322,331}\'::integer[]))" } } ]', TRUE);
 				break;
+			case 'neo4j':
+				$r = mt_rand(1, 100);
+				$html = '<table><tbody><tr><th>eid</th></tr><tr><td><code>' . $r . '</code></td></tr></tbody></table>';
+				return \Nette\Utils\Html::el()->setHtml($html);
 			default:
 				return NULL;
 		}
