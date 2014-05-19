@@ -12,6 +12,7 @@
 	#tracy-queries tr:hover td { background-color: #EAFCFF !important; }
 	#tracy-queries th.tracy-queries-elapsed,
 	#tracy-queries td.tracy-queries-elapsed { text-align: right; width: 4em; }
+	#tracy-queries .tracy-queries-hidden { display: none; }
 	#tracy-queries .tracy-queries-overview { margin-bottom: 2ex; }
 	#tracy-queries .tracy-queries-list { max-height: 380px; overflow-y: scroll; display: block; }
 	#tracy-queries .tracy-queries-border-fix { border: 1px solid #E6DFBF; border-width: 1px 0px; }
@@ -107,7 +108,7 @@
 	            saveState(filter);
 
 				foreach(queryRows, function(query, id) {
-					query.setAttribute('class', filter[id] ? '' : 'hidden');
+					query.setAttribute('class', filter[id] ? '' : 'tracy-queries-hidden');
 				});
 	        };
 
