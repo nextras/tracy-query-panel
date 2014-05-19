@@ -9,8 +9,6 @@
 	#tracy-queries .tracy-queries-item { min-width: 300px; }
 	#tracy-queries th.elapsed,
 	#tracy-queries td.elapsed { text-align: right; width: 4em; }
-	#tracy-queries th.count,
-	#tracy-queries td.count { text-align: right; width: 32px; }
 	#tracy-queries .storage,
 	#tracy-queries .query { border-left: 4px solid; }
 	#tracy-queries .query .outlier { color: red; }
@@ -45,7 +43,6 @@
 			<tr>
 				<th class="elapsed">ms</th>
 				<th class="tracy-queries-item">Query</th>
-				<th class="count">Rows</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,7 +64,6 @@
 							<div class="tracy-queries-label-fix">{$result}</div>
 						</div>
 					</td>
-					<td n:inner-if="!$isVoid" class="count">{$query->getResultCount()}</td>
 				</tr>
 			{/foreach}
 		</tbody>

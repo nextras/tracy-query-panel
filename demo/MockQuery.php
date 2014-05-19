@@ -15,11 +15,6 @@ class MockQuery extends \Nette\Object implements \Tracy\QueryPanel\IQuery
 		$this->elapsedTime = mt_rand(100, 6000) / 100;
 	}
 
-	public function getResultCount()
-	{
-		return $this->resultCount;
-	}
-
 	public function getResult()
 	{
 		switch ($this->type)
