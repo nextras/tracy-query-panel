@@ -6,6 +6,7 @@
 <style n:syntax="off">
 	#tracy-queries code pre b { color: blue; }
 	#tracy-queries pre.tracy-dump { background-color: inherit; }
+	#tracy-queries input[type="checkbox"] { margin-right: .2em; }
 	#tracy-queries .tracy-queries-item { min-width: 300px; }
 	#tracy-queries .tracy-queries-highlight td,
 	#tracy-queries tr:hover td { background-color: #EAFCFF !important; }
@@ -33,6 +34,7 @@
 			<tr n:foreach="$perStorage as $node" data-storage-id="{$node|storageId}" class="storage">
 				<td class="tracy-queries-elapsed">{$node->elapsed|number:1}</td>
 				<td>
+					<input type="checkbox" checked>
 					{$node->storageType}
 					<code n:if="$node->databaseName">({$node->databaseName})</code>
 				</td>
@@ -51,7 +53,7 @@
 				{var $isVoid = ! $query instanceof \Tracy\QueryPanel\IQuery}
 				{var $result = $isVoid ? NULL : $query->getResult()}
 				{var $info = $query->getInfo()}
-				<tr data-storage-id="{$query|storageId}" class="query">
+				<tr data-storage-id="{$query|storageId}">
 					{var $time = $query->getElapsedTime()}
 					<td class="tracy-queries-elapsed" style="color: {$time|colorRange|noescape}">{$time|number:1}</td>
 					<td class="tracy-queries-item">
@@ -81,18 +83,67 @@
     				return row;
     			}
     		}
-    	}
-    	var rows = document.querySelectorAll('.query');
+    	};
+
+    	var updateFilteredRows = function() {
+    	    var storages = document.querySelectorAll('.tracy-queries-overview tr[data-storage-id]');
+    	    var filter = {};
+    	    for (i = 0; i < storages.length; ++i)
+    	    {
+    	        var id = storages[i].getAttribute('data-storage-id');
+    	        filter[id] = storages[i].querySelector('input').checked;
+    	    }
+    	    saveState(filter);
+
+    	    var queries = document.querySelectorAll('.tracy-queries-list tr[data-storage-id]');
+    	    for (i = 0; i < queries.length; ++i)
+			{
+				var id = queries[i].getAttribute('data-storage-id');
+				queries[i].setAttribute('class', filter[id] ? '' : 'hidden');
+			}
+    	};
+
+    	var rows = document.querySelectorAll('.tracy-queries-list tr[data-storage-id]');
     	for (i = 0; i < rows.length; ++i) {
     		rows[i].addEventListener("mouseenter", function(event) {
     			var type = event.target.getAttribute('data-storage-id');
-    			findStorageRow(type).setAttribute('class', 'tracy-queries-highlight');
+    			findStorageRow(type).setAttribute('class', 'storage tracy-queries-highlight');
     		});
     		rows[i].addEventListener("mouseleave", function(event) {
     			var type = event.target.getAttribute('data-storage-id');
-    			findStorageRow(type).setAttribute('class', '');
+    			findStorageRow(type).setAttribute('class', 'storage');
     		});
     	}
+
+    	var rows = document.querySelectorAll('.storage');
+        for (i = 0; i < rows.length; ++i) {
+            rows[i].addEventListener("click", function(event) {
+                var checkbox = event.target;
+                if (!checkbox.getAttribute("type"))
+                {
+                    checkbox = event.target.parentNode.querySelector('input');
+                    checkbox.checked = !checkbox.checked;
+                }
+
+                updateFilteredRows();
+            });
+        }
+
+        var saveState = function(filter) {
+			localStorage.setItem("tracy-queries", JSON.stringify(filter));
+		};
+		var loadState = function() {
+			var filter = JSON.parse(localStorage.getItem("tracy-queries") || "{}");
+			var rows = document.querySelectorAll('.tracy-queries-overview tr[data-storage-id]');
+            for (i = 0; i < rows.length; ++i) {
+				var id = rows[i].getAttribute('data-storage-id');
+				console.log(!(id in filter));
+				rows[i].querySelector('input').checked = !(id in filter) || filter[id];
+			}
+			updateFilteredRows();
+		};
+
+		loadState();
     	//]]>
     </script>
 </div>
