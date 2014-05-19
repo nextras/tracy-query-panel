@@ -24,13 +24,14 @@
 
 <h1>{$title|noescape}</h1>
 
-{var $perStorage = $collector->getElapsedTimePerStorage()}
+{var $perStorage = $collector->getPerStorageInfo()}
 <div id="tracy-queries" n:if="count($perStorage)">
 	<table class="tracy-queries-overview">
 		<thead>
 			<tr>
 				<th class="tracy-queries-elapsed">ms</th>
 				<th>Storage</th>
+				<th>Count</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,6 +42,7 @@
 					{$node->storageType}
 					<code n:if="$node->databaseName">({$node->databaseName})</code>
 				</td>
+				<td>{$node->count}</td>
 			</tr>
 		</tbody>
 	</table>

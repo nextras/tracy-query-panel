@@ -36,7 +36,7 @@ class QueryCollector extends Nette\Object
 
 
 
-	public function getElapsedTimePerStorage()
+	public function getPerStorageInfo()
 	{
 		$elapsed = array();
 		foreach ($this->queries as $query)
@@ -51,9 +51,11 @@ class QueryCollector extends Nette\Object
 					'storageType' => $storage,
 					'databaseName' => $db,
 					'elapsed' => 0,
+					'count' => 0
 				);
 			}
 			$elapsed[$key]->elapsed += $query->getElapsedTime();
+			$elapsed[$key]->count += 1;
 		}
 
 		usort($elapsed, function($a, $b) {
