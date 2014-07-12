@@ -33,6 +33,11 @@ class DibiQuery extends Object implements IQuery
 	 */
 	public function getResult()
 	{
+		if (!$this->event->result)
+		{
+			return;
+		}
+
 		$html = Dumper::toHtml($this->event->result->fetchAll(), [
 			Dumper::COLLAPSE => TRUE,
 			Dumper::TRUNCATE => 50,
