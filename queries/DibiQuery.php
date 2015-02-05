@@ -91,6 +91,11 @@ class DibiQuery extends Object implements IQuery
 	 */
 	public function getInfo()
 	{
+		if (!$this->event->sql || stripos($this->event->sql, 'select') !== 0)
+		{
+			return;
+		}
+
 		$query = 'EXPLAIN (FORMAT JSON) (' . $this->event->sql . ')';
 		$explain = $this->event->connection->nativeQuery($query);
 		$data = json_decode($explain->fetchSingle(), TRUE);
