@@ -12,7 +12,7 @@ class QueryPanelExtension extends CompilerExtension
 
 	public function loadConfiguration()
 	{
-		if (class_exists('Tracy\Debugger') && Debugger::$productionMode === FALSE)
+		if (!class_exists('Tracy\Debugger') || Debugger::$productionMode === TRUE)
 		{
 			return;
 		}
