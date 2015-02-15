@@ -26,7 +26,10 @@
         "petrp/access": "~0.2.2"
     },
     "autoload": {
-        "psr-4": { "Nextras\\TracyQueryPanel\\": "src/" }
+        "psr-4": {
+            "Nextras\\TracyQueryPanel\\": "src/TracyQueryPanel",
+            "Nextras\\TracyQueryPanel\\Queries\\": "src/queries"
+        }
     },
     "extra": {
         "branch-alias": {
