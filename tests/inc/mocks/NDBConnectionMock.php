@@ -19,7 +19,7 @@ class NDBConnectionMock extends Nette\Database\Connection
 		$result->shouldReceive('getConnection')
 			->andReturn($this);
 		$result->shouldReceive('getTime')
-			->andReturn(NetteDatabaseQueryTest::ELAPSED);
+			->andReturn(1337);
 		$result->shouldReceive('getQueryString')
 			->andReturn($statement);
 		$result->shouldReceive('getParameters')

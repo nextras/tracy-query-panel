@@ -27,7 +27,6 @@ Then create implementations `IVoidQueries` based on your service hooks and pass 
 
 Currently implemented queries support:
 
-- Dibi
 - Nette\Database
 
 However, it should be super straightforward to implement `IQuery` for any engine.
@@ -43,16 +42,17 @@ These implementations will not however work out of the box.
 
 If you happen to create implementations for your engine, please consider sending a pull request into this repo.
 
-Usage with Nette\Database
+Usage panels
 -------------------------
 
-Register with
-```php
-NetteDatabaseQuery::register(Nextras\TracyQueryPanel\QueryPanel $panel, Nette\Database\Connection $connection);
-```
-preferably besides your service definitions.
+Register panel in your neon configuration:
 
-(This will most probably be refactored into DI extension options.)
+```yaml
+queryPanel:
+	- Nextras\TracyQueryPanel\Queries\DibiQuery
+```
+
+all arguments are autowired.
 
 Additional resources
 --------------------

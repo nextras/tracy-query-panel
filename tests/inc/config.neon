@@ -1,0 +1,10 @@
+parameters:
+	db:
+		driver: pgsql
+		dbname: foobar
+
+queryPanel:
+	- Nextras\TracyQueryPanel\Queries\NetteDatabaseQuery
+
+services:
+	nette.connection: NDBConnectionMock("%db.driver%:dbname=%db.dbname%")

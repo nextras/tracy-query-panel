@@ -17,11 +17,18 @@ class QueryPanelExtension extends CompilerExtension
 			return;
 		}
 
-		$this->getContainerBuilder()
+		$config = $this->getConfig();
+
+		$builder = $this->getContainerBuilder();
+		$def = $builder
 			->addDefinition($this->prefix('panel'))
 			->setClass('Nextras\TracyQueryPanel\QueryPanel');
-	}
 
+		foreach ($config as $class)
+		{
+			$def->addSetup("$class::register");
+		}
+	}
 
 	/**
 	 * @param Nette\Configurator $configurator

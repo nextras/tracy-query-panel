@@ -20,23 +20,14 @@ require_once __DIR__ . '/../../bootstrap.php';
 class NetteDatabaseQueryTest extends TestCase
 {
 
-	const DRIVER = 'pgsql';
-	const DBNAME = 'foobar';
-	const ELAPSED = 1337;
-
 	public function testSelect()
 	{
-		$bar = Mockery::mock('Tracy\\Bar');
-		$bar->shouldReceive('addPanel')
-			->andReturnSelf();
-		$panel = new QueryPanel($bar);
-
-		$driver = 'pgsql';
-		$dbname = 'foobar';
-
-		$connection = new \NDBConnectionMock(self::DRIVER . ':user=guest;dbname=' . self::DBNAME . ';host=localhost');
-		NetteDatabaseQuery::register($panel, $connection);
-
+		$dic = $this->createContainer(TRUE);
+		/** @var QueryPanel $panel */
+		$panel = $dic->getService('queryPanel.panel');
+		/** @var Nette\Database\Connection $connection */
+		$connection = $dic->getService('nette.connection');
+dump($connection);
 		$access = Access($panel, '$collector');
 		/** @var QueryCollector $qc */
 		$qc = $access->get();
@@ -50,9 +41,9 @@ class NetteDatabaseQueryTest extends TestCase
 		$query = array_pop($queries);
 		Assert::true($query instanceof NetteDatabaseQuery);
 
-		Assert::same(self::DRIVER, $query->getStorageType());
-		Assert::same(self::DBNAME, $query->getDatabaseName());
-		Assert::same(self::ELAPSED, $query->getElapsedTime());
+		Assert::same('pgsql', $query->getStorageType()); // defined in config.neon
+		Assert::same('foobar', $query->getDatabaseName()); // -//-
+		Assert::same(1337, $query->getElapsedTime()); // defined in NDBConnectionMock
 		Assert::same('<pre class="dump"><strong style="color:blue">SELECT</strong> 1</pre>', $query->getQuery());
 		Assert::true(strpos($query->getResult(), '<table') !== FALSE);
 	}
