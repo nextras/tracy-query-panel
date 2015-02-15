@@ -21,19 +21,22 @@ Register Nette DI extension:
 ```yaml
 extensions:
 	queryPanel: Nextras\TracyQueryPanel\Bridges\NetteDI\QueryPanelExtension
+
+queryPanel:
+    - Nextras\TracyQueryPanel\Queries\DibiQuery
 ```
 
-Then create implementations `IVoidQueries` based on your service hooks and pass them to `QueryPanel::addQuery()`.
+Possibly create implementations of `IVoidQueries` based on your service hooks and pass them to `QueryPanel::addQuery()`.
 
-Currently implemented queries support:
+Currently implemented query handlers are:
 
+- DibiConnection
 - Nette\Database
 
-However, it should be super straightforward to implement `IQuery` for any engine.
+However, it should be super straightforward to implement `IQuery` producer for any engine.
 
-Example legacy implementations:
+Example legacy implementations for:
 
-- Dibi
 - Neo4j
 - Elasticsearch
 
@@ -41,18 +44,6 @@ can be found at https://github.com/Mikulas/nette-panel-queries/tree/master/queri
 These implementations will not however work out of the box.
 
 If you happen to create implementations for your engine, please consider sending a pull request into this repo.
-
-Usage panels
--------------------------
-
-Register panel in your neon configuration:
-
-```yaml
-queryPanel:
-	- Nextras\TracyQueryPanel\Queries\DibiQuery
-```
-
-all arguments are autowired.
 
 Additional resources
 --------------------
