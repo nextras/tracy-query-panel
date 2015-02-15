@@ -27,6 +27,7 @@ Then create implementations `IVoidQueries` based on your service hooks and pass 
 
 Currently implemented queries support:
 
+- Dibi
 - Nette\Database
 
 However, it should be super straightforward to implement `IQuery` for any engine.
