@@ -25,7 +25,7 @@
 
 <h1>{$title|noescape}</h1>
 
-{var $perStorage = $collector->getPerStorageInfo()}
+{var $perStorage = $collector->getAggregations()}
 <div id="tracy-queries" n:if="count($perStorage)">
 	<table class="tracy-queries-storages">
 		<thead>
