@@ -22,7 +22,8 @@
     "require-dev": {
         "mockery/mockery": "~0.9",
         "nette/nette": "~2.3.0-beta",
-        "nette/tester": "~1.3"
+        "nette/tester": "~1.3",
+        "petrp/access": "~0.2.2"
     },
     "autoload": {
         "psr-4": { "Nextras\\TracyQueryPanel\\": "src/" }

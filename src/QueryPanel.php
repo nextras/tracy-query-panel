@@ -26,7 +26,7 @@ class QueryPanel implements Tracy\IBarPanel
 
 
 
-	public function addQuery(IQuery $query)
+	public function addQuery(IVoidQuery $query)
 	{
 		$this->collector->addQuery($query);
 	}

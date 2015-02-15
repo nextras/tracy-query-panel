@@ -6,14 +6,14 @@ namespace Nextras\TracyQueryPanel;
 class QueryCollector implements \Countable
 {
 
-	/** @var IQuery[] */
+	/** @var IVoidQuery[] */
 	protected $queries = array();
 
 
 	/**
-	 * @param IQuery $query
+	 * @param IVoidQuery $query
 	 */
-	public function addQuery(IQuery $query)
+	public function addQuery(IVoidQuery $query)
 	{
 		$this->queries[] = $query;
 	}
@@ -70,7 +70,7 @@ class QueryCollector implements \Countable
 
 
 	/**
-	 * @return IQuery[] ordered by time called asc
+	 * @return IVoidQuery[] ordered by time called asc
 	 */
 	public function getQueries()
 	{
