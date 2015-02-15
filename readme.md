@@ -23,6 +23,36 @@ extensions:
 	queryPanel: Nextras\TracyQueryPanel\Bridges\NetteDI\QueryPanelExtension
 ```
 
+Then create implementations `IVoidQueries` based on your service hooks and pass them to `QueryPanel::addQuery()`.
+
+Currently implemented queries support:
+
+- Nette\Database
+
+However, it should be super straightforward to implement `IQuery` for any engine.
+
+Example legacy implementations:
+
+- Dibi
+- Neo4j
+- Elasticsearch
+
+can be found at https://github.com/Mikulas/nette-panel-queries/tree/master/queries.
+These implementations will not however work out of the box.
+
+If you happen to create implementations for your engine, please consider sending a pull request into this repo.
+
+Usage with Nette\Database
+-------------------------
+
+Register with
+```php
+NetteDatabaseQuery::register(Nextras\TracyQueryPanel\QueryPanel $panel, Nette\Database\Connection $connection);
+```
+preferably besides your service definitions.
+
+(This will most probably be refactored into DI extension options.)
+
 Additional resources
 --------------------
 
