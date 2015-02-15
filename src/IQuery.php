@@ -1,6 +1,6 @@
 <?php
 
-namespace Tracy\QueryPanel;
+namespace Nextras\TracyQueryPanel;
 
 use Nette\Utils\Html;
 

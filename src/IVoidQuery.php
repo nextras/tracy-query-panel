@@ -1,6 +1,6 @@
 <?php
 
-namespace Tracy\QueryPanel;
+namespace Nextras\TracyQueryPanel;
 
 use Nette\Utils\Html;
 
@@ -20,7 +20,7 @@ interface IVoidQuery
 
 
 	/**
-	 * Database, fulltext index or similar, NULL if not applicable
+	 * Database name, fulltext index or similar, NULL if not applicable
 	 * @return NULL|string
 	 */
 	public function getDatabaseName();
@@ -42,7 +42,7 @@ interface IVoidQuery
 
 
 	/**
-	 * e.g. SQL explain
+	 * e.g. explain
 	 * @return NULL|Html|string
 	 */
 	public function getInfo();
