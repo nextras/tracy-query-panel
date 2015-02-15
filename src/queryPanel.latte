@@ -25,8 +25,8 @@
 
 <h1>{$title|noescape}</h1>
 
-{var $perStorage = $collector->getAggregations()}
-<div id="tracy-queries" n:if="count($perStorage)">
+{var $aggregations = $collector->getAggregations()}
+<div id="tracy-queries" n:if="count($aggregations)">
 	<table class="tracy-queries-storages">
 		<thead>
 			<tr>
@@ -36,14 +36,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr n:foreach="$perStorage as $node" data-storage-id="{$node|storageId}" class="storage">
-				<td class="tracy-queries-elapsed">{$node->elapsed|number:1}</td>
+			<tr n:foreach="$aggregations as $aggregate" data-storage-id="{$aggregate|storageId}" class="storage">
+				<td class="tracy-queries-elapsed">{$aggregate->elapsed|number:1}</td>
 				<td>
 					<input type="checkbox" checked>
-					{$node->storageType}
-					<code n:if="$node->databaseName">({$node->databaseName})</code>
+					{$aggregate->storageType}
+					<code n:if="$aggregate->databaseName">({$aggregate->databaseName})</code>
 				</td>
-				<td>{$node->count}</td>
+				<td>{$aggregate->count}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -57,8 +57,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					{foreach $collector->queries as $query}
-						{var $isVoid = ! $query instanceof \Tracy\QueryPanel\IQuery}
+					{foreach $collector->getQueries() as $query}
+						{var $isVoid = ! $query instanceof \Nextras\TracyQueryPanel\IQuery}
 						{var $result = $isVoid ? NULL : $query->getResult()}
 						{var $info = $query->getInfo()}
 						<tr data-storage-id="{$query|storageId}">

@@ -103,13 +103,18 @@ class QueryPanel implements Tracy\IBarPanel
 
 	/**
 	 * @internal
-	 * @param IQuery $query
+	 * @param IQuery|stdClass $query
 	 * @return string
 	 * @internal
 	 */
 	public function getStorageId($query)
 	{
-		return $query->getStorageType() . '|' . $query->getDatabaseName();
+		if ($query instanceof IVoidQuery)
+		{
+			return $query->getStorageType() . '|' . $query->getDatabaseName();
+		}
+		// else is aggregation, stdClass
+		return $query->storageType . '|' . $query->databaseName;
 	}
 
 
