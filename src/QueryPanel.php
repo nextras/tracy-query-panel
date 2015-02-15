@@ -35,6 +35,7 @@ class QueryPanel implements Tracy\IBarPanel
 
 	/**
 	 * @return string
+	 * @internal
 	 */
 	public function getTitle()
 	{
@@ -61,6 +62,7 @@ class QueryPanel implements Tracy\IBarPanel
 	 * Renders HTML code for custom tab.
 	 *
 	 * @return string
+	 * @internal
 	 */
 	public function getTab()
 	{
@@ -76,6 +78,7 @@ class QueryPanel implements Tracy\IBarPanel
 	 * Renders HTML code for custom panel.
 	 *
 	 * @return string html
+	 * @internal
 	 */
 	public function getPanel()
 	{
@@ -102,6 +105,7 @@ class QueryPanel implements Tracy\IBarPanel
 	 * @internal
 	 * @param IQuery $query
 	 * @return string
+	 * @internal
 	 */
 	public function getStorageId($query)
 	{
@@ -114,6 +118,7 @@ class QueryPanel implements Tracy\IBarPanel
 	 * Linear color gradient
 	 * @param float $value
 	 * @return string hex color
+	 * @internal
 	 */
 	public function getColorInRange($value)
 	{
