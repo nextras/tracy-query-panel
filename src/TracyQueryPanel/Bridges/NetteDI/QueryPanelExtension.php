@@ -24,6 +24,9 @@ class QueryPanelExtension extends CompilerExtension
 			->addDefinition($this->prefix('panel'))
 			->setClass('Nextras\TracyQueryPanel\QueryPanel');
 
+		$builder->getDefinition('tracy.bar')
+			->addSetup('addPanel', ['@' . $this->prefix('panel')]);
+
 		foreach ($config as $class)
 		{
 			$def->addSetup("$class::register");

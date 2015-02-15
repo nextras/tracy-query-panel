@@ -17,11 +17,9 @@ class QueryPanel implements Tracy\IBarPanel
 
 
 
-	public function __construct(Tracy\Bar $bar)
+	public function __construct()
 	{
 		$this->collector = new QueryCollector();
-
-		$bar->addPanel($this);
 	}
 
 
