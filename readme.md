@@ -20,10 +20,10 @@ Register Nette DI extension:
 
 ```yaml
 extensions:
-	queryPanel: Nextras\TracyQueryPanel\Bridges\NetteDI\QueryPanelExtension
+	queryPanel: Nextras\TracyQueryPanel\DI\QueryPanelExtension
 
 queryPanel:
-    - Nextras\TracyQueryPanel\Queries\DibiQuery
+    - Nextras\TracyQueryPanel\Handlers\DibiHandler
 ```
 
 Possibly create implementations of `IVoidQueries` based on your service hooks and pass them to `QueryPanel::addQuery()`.

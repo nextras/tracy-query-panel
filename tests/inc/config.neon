@@ -4,7 +4,7 @@ parameters:
 		dbname: foobar
 
 queryPanel:
-	- Nextras\TracyQueryPanel\Queries\NetteDatabaseQuery
+	- Nextras\TracyQueryPanel\Handlers\NetteDatabaseHandler
 
 services:
 	nette.connection: NDBConnectionMock("%db.driver%:dbname=%db.dbname%")

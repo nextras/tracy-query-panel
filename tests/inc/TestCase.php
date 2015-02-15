@@ -4,7 +4,7 @@ namespace NextrasTests\TracyQueryPanel;
 
 use Mockery;
 use Nette;
-use Nextras\TracyQueryPanel\Bridges\NetteDI\QueryPanelExtension;
+use Nextras\TracyQueryPanel\DI\QueryPanelExtension;
 use Tracy\Debugger;
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nextras\TracyQueryPanel\Queries;
+namespace Nextras\TracyQueryPanel\Handlers;
 
 use DibiConnection;
 use DibiEvent;
@@ -10,7 +10,7 @@ use Nextras\TracyQueryPanel\QueryPanel;
 use Tracy\Dumper;
 
 
-class DibiQuery implements IQuery
+class DibiHandler implements IQuery
 {
 
 	/** @var DibiEvent */

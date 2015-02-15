@@ -1,6 +1,6 @@
 <?php
 
-namespace Nextras\TracyQueryPanel\Queries;
+namespace Nextras\TracyQueryPanel\Handlers;
 
 use Nette\Database as NDB;
 use Nette\Utils\Html;
@@ -8,7 +8,7 @@ use Nextras\TracyQueryPanel\IQuery;
 use Nextras\TracyQueryPanel\QueryPanel;
 
 
-class NetteDatabaseQuery implements IQuery
+class NetteDatabaseHandler implements IQuery
 {
 
 	/** @var NDB\ResultSet */

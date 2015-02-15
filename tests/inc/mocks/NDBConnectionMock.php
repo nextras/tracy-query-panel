@@ -1,9 +1,6 @@
 <?php
 
 
-use NextrasTests\TracyQueryPanel\Queries\NetteDatabaseQueryTest;
-
-
 class NDBConnectionMock extends Nette\Database\Connection
 {
 
@@ -14,7 +11,7 @@ class NDBConnectionMock extends Nette\Database\Connection
 
 	public function query($statement = NULL)
 	{
-		$result = Mockery::mock('\Nette\Database\ResultSet');
+		$result = Mockery::mock('\\Nette\\Database\\ResultSet');
 
 		$result->shouldReceive('getConnection')
 			->andReturn($this);

@@ -28,7 +28,7 @@
     "autoload": {
         "psr-4": {
             "Nextras\\TracyQueryPanel\\": "src/TracyQueryPanel",
-            "Nextras\\TracyQueryPanel\\Queries\\": "src/queries"
+            "Nextras\\TracyQueryPanel\\Handlers\\": "src/handlers"
         }
     },
     "extra": {

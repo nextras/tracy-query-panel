@@ -1,6 +1,6 @@
 <?php
 
-namespace Nextras\TracyQueryPanel\Bridges\NetteDI;
+namespace Nextras\TracyQueryPanel\DI;
 
 use Nette;
 use Nette\DI\CompilerExtension;
