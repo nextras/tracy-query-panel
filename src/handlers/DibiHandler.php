@@ -110,7 +110,7 @@ class DibiHandler implements IQuery
 			return NULL;
 		}
 
-		$query = 'EXPLAIN (FORMAT JSON) (' . $this->event->sql . ')';
+		$query = 'EXPLAIN (FORMAT JSON) ' . $this->event->sql;
 		$explain = $this->event->connection->nativeQuery($query);
 		$data = json_decode($explain->fetchSingle(), TRUE);
 		return Html::el()->setHtml(Dumper::toHtml($data, [
