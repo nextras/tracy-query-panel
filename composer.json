@@ -1,5 +1,5 @@
 {
-    "name": "nextras/tracy-query-panel",
+    "name": "dakorpar/tracy-query-panel",
     "type": "library",
     "description": "Query panel for Tracy php debugger",
     "keywords": ["tracy", "nextras"],
@@ -17,7 +17,8 @@
         "php": ">=5.4",
         "latte/latte": "~2.2.0 || ~2.3.0-beta",
         "nette/di": "~2.3.0-beta",
-        "tracy/tracy": "~2.3.0-RC"
+        "tracy/tracy": "~2.3.0-RC",
+        "dibi/dibi": "^3.0"
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
@@ -33,7 +34,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "master"
         }
     }
 }
