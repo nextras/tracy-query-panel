@@ -2,8 +2,9 @@
 
 namespace Nextras\TracyQueryPanel\Handlers;
 
-use DibiConnection;
-use DibiEvent;
+use Dibi\Connection;
+use Dibi\Event;
+use Dibi\Result;
 use Nette\Utils\Html;
 use Nextras\TracyQueryPanel\IQuery;
 use Nextras\TracyQueryPanel\QueryPanel;
@@ -13,17 +14,17 @@ use Tracy\Dumper;
 class DibiHandler implements IQuery
 {
 
-	/** @var DibiEvent */
+	/** @var Event */
 	protected $event;
 
-	public function __construct(DibiEvent $event)
+	public function __construct(Event $event)
 	{
 		$this->event = $event;
 	}
 
-	public static function register(DibiConnection $dibi, QueryPanel $panel)
+	public static function register(Connection $dibi, QueryPanel $panel)
 	{
-		$dibi->onEvent[] = function(DibiEvent $event) use ($panel) {
+		$dibi->onEvent[] = function(Event $event) use ($panel) {
 			$panel->addQuery(new static($event));
 		};
 	}
@@ -41,7 +42,7 @@ class DibiHandler implements IQuery
 			return NULL;
 		}
 
-		if ($this->event->result instanceof \DibiResult)
+		if ($this->event->result instanceof Result)
 		{
 			$html = Dumper::toHtml($this->event->result->fetchAll(), [
 				Dumper::COLLAPSE => TRUE,
@@ -64,7 +65,7 @@ class DibiHandler implements IQuery
 	{
 		$class = get_class($this->event->connection->driver);
 		$name = preg_replace('~^Dibi|Driver$~', '', $class);
-		return lcFirst($name);
+		return lcfirst($name);
 	}
 
 	/**
@@ -100,7 +101,7 @@ class DibiHandler implements IQuery
 	 * e.g. SQL explain
 	 *
 	 * @return NULL|Html|string
-	 * @throws \DibiException
+	 * @throws \Dibi\Exception
 	 * @throws \Exception
 	 */
 	public function getInfo()
@@ -110,12 +111,14 @@ class DibiHandler implements IQuery
 			return NULL;
 		}
 
-		$query = 'EXPLAIN (FORMAT JSON) ' . $this->event->sql;
-		$explain = $this->event->connection->nativeQuery($query);
-		$data = json_decode($explain->fetchSingle(), TRUE);
-		return Html::el()->setHtml(Dumper::toHtml($data, [
-			Dumper::COLLAPSE => TRUE,
-		]));
+		if(\Nette\Utils\Strings::startsWith($this->event->sql, 'SELECT')) {
+			$query = 'EXPLAIN ' . $this->event->sql;
+			$explain = $this->event->connection->nativeQuery($query);
+			$data = $explain->fetch();
+			return Html::el()->setHtml(Dumper::toHtml($data, [
+				Dumper::COLLAPSE => TRUE,
+			]));
+		}
+		return null;
 	}
-
 }
